@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0d">
+  <meta name="description" content="CALL OUT — guia visual de mapas e callouts de VALORANT. Explore regiões e melhore a comunicação durante as partidas.">
+  <title>CALL OUT — VALORANT MAP GUIDE</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/callout.svg">
+  <link rel="preconnect" href="https://valorant-api.com">
+  <link rel="preconnect" href="https://media.valorant-api.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/maps.js" defer></script>
+  <script src="js/pin-overrides.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <div class="site-noise" aria-hidden="true"></div>
+  <header class="site-header" id="top">
+    <a class="brand" href="#inicio" aria-label="CALL OUT, início">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-name">CALL<span>OUT</span><small>VALORANT MAP GUIDE</small></span>
+    </a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
+      <a class="nav-link active" href="#inicio">Início</a>
+      <a class="nav-link" href="#mapas">Mapas</a>
+      <a class="nav-link" href="#sobre">Sobre</a>
+      <a class="nav-cta" href="#mapas">Explorar mapas <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section-shell" id="inicio">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot"></span> CONHECIMENTO TÁTICO // COMUNICAÇÃO PRECISA</p>
+        <h1>SAIBA ONDE<br>VOCÊ ESTÁ.<br><span>COMUNIQUE.</span><br>DOMINE.</h1>
+        <p class="hero-description">Um guia visual para descobrir os nomes dos locais de cada mapa do VALORANT e melhorar sua comunicação durante as partidas.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#mapas">Explorar mapas <span aria-hidden="true">↘</span></a>
+          <a class="text-link" href="#sobre">Conheça o projeto <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-stats" aria-label="Sobre o guia">
+          <div><strong id="hero-map-count">13</strong><span>MAPAS CLÁSSICOS</span></div>
+          <div class="stat-divider"></div>
+          <div><strong>01</strong><span>OBJETIVO: COMUNICAR</span></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Ilustração tática abstrata">
+        <div class="hero-art-ring ring-one"></div>
+        <div class="hero-art-ring ring-two"></div>
+        <div class="hero-crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span><b></b></div>
+        <div class="hero-coord coord-top">SECTOR // 05-ALPHA</div>
+        <div class="hero-coord coord-bottom">MAP DATA / ACTIVE</div>
+        <div class="hero-red-slice"></div>
+        <div class="hero-signal"><span>COMMS</span><strong>ONLINE</strong><i></i></div>
+        <div class="hero-art-label">CALL<br><b>OUT</b><span>TACTICAL MAP INTELLIGENCE</span></div>
+      </div>
+      <a class="scroll-cue" href="#mapas" aria-label="Rolar para a galeria"><span></span> SCROLL TO EXPLORE</a>
+    </section>
+
+    <section class="maps-section section-shell" id="mapas">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / BANCO DE MAPAS</p>
+          <h2>ESCOLHA SEU <span>TERRENO.</span></h2>
+          <p class="section-description">Selecione um mapa para consultar sua minimapa e explorar os callouts por região.</p>
+        </div>
+        <div class="map-count-box"><strong id="visible-map-count">13</strong><span>MAPAS<br>NO GUIA</span></div>
+      </div>
+
+      <div class="map-toolbar">
+        <label class="search-box" for="map-search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="map-search" type="search" placeholder="Buscar mapa..." autocomplete="off">
+          <kbd>⌘ / CTRL + K</kbd>
+        </label>
+        <div class="filter-group" role="group" aria-label="Filtrar mapas">
+          <button class="filter-button active" data-filter="all" type="button">Todos <span id="all-filter-count">13</span></button>
+          <button class="filter-button" data-filter="active" type="button">Em rotação</button>
+          <button class="filter-button" data-filter="inactive" type="button">Fora da rotação</button>
+        </div>
+      </div>
+      <p class="rotation-note"><span class="note-mark">i</span> A galeria inclui os mapas clássicos de Spike, mesmo quando estão fora da rotação competitiva atual. O selo de rotação é uma referência que pode mudar após atualizações do jogo.</p>
+
+      <div class="maps-grid" id="maps-grid" aria-live="polite">
+        <div class="loading-state"><span class="loader"></span><p>CARREGANDO DADOS TÁTICOS...</p></div>
+      </div>
+      <div class="empty-state hidden" id="empty-state"><span>⌕</span><h3>NENHUM MAPA ENCONTRADO</h3><p>Tente outro nome ou altere o filtro.</p><button class="button button-ghost" id="clear-filters" type="button">Limpar filtros</button></div>
+      <p class="api-status" id="api-status" role="status">Conectando à base de dados de mapas…</p>
+    </section>
+
+    <section class="guide-section section-shell hidden" id="guia" aria-labelledby="guide-title">
+      <div class="section-heading guide-heading">
+        <div>
+          <p class="eyebrow">02 / INTELIGÊNCIA DE MAPA</p>
+          <h2 id="guide-title">CALL OUT <span>DATABASE.</span></h2>
+          <p class="section-description" id="guide-subtitle">Explore callouts competitivos — CT, T Spawn, Main, Heaven, Elbow e outros termos usados nas partidas.</p>
+        </div>
+        <button class="button button-ghost close-guide" id="close-guide" type="button"><span aria-hidden="true">←</span> Voltar aos mapas</button>
+      </div>
+      <div class="guide-layout">
+        <div class="minimap-panel">
+          <div class="panel-topline"><span><i class="live-dot"></i> MINIMAPA</span><span id="map-coordinate">DADOS DO MAPA</span></div>
+          <div class="minimap-stage" id="minimap-stage">
+            <div class="minimap-placeholder"><span class="loader"></span><span>CARREGANDO MINIMAPA</span></div>
+            <div class="minimap-wrap" id="minimap-wrap">
+              <img id="minimap-image" alt="Minimapa do mapa selecionado" draggable="false">
+              <div class="callout-markers" id="callout-markers" aria-label="Marcações dos callouts"></div>
+              <div class="minimap-corner corner-tl"></div><div class="minimap-corner corner-tr"></div><div class="minimap-corner corner-bl"></div><div class="minimap-corner corner-br"></div>
+            </div>
+          </div>
+<div class="map-legend"><span><i class="legend-dot red"></i> Callout selecionável</span><span><i class="legend-dot white"></i> Passe o mouse para destacar</span><span><i class="legend-dot red"></i> Borda quadrada = posição manual</span></div>
+        </div>
+        <aside class="callouts-panel">
+          <div class="panel-topline"><span>REGIÕES & POSIÇÕES</span><span id="callout-total">0 CALLS</span></div>
+          <div class="pin-language-wrap">
+            <label for="pin-language">IDIOMA DOS NOMES DOS PINS</label>
+            <select id="pin-language" aria-label="Idioma dos nomes dos pins" disabled>
+              <option value="en-US">Selecione um idioma…</option>
+            </select>
+          </div>
+          <div class="callout-search-wrap"><span aria-hidden="true">⌕</span><input id="callout-search" type="search" placeholder="Buscar callout..." aria-label="Buscar callout"></div>
+          <div class="region-filters" id="region-filters" aria-label="Filtrar por região"></div>
+          <div class="selected-callout hidden" id="selected-callout"><span class="selected-kicker">CALL OUT SELECIONADO</span><strong id="selected-callout-name">—</strong><span id="selected-callout-region">—</span></div>
+          <div class="callout-list" id="callout-list"><p class="callout-empty">Selecione um mapa para carregar suas regiões.</p></div>
+          <p class="callout-footnote">Os nomes de regiões vêm dos dados públicos de mapas. Alguns termos podem aparecer em inglês, como são usados frequentemente durante as partidas.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="about-section section-shell" id="sobre">
+      <div class="about-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="about-copy">
+        <p class="eyebrow">03 / SOBRE O PROJETO</p>
+        <h2>MENOS DÚVIDA.<br><span>MAIS INFORMAÇÃO.</span></h2>
+        <p>CALL OUT é um guia visual feito para ajudar jogadores iniciantes e experientes a reconhecer regiões, orientar companheiros e se comunicar com mais precisão durante as partidas.</p>
+        <p class="about-small">Conhecer o mapa não ganha a rodada sozinho. Mas uma informação clara pode mudar tudo.</p>
+      </div>
+      <div class="about-code"><span>COMMS_PROTOCOL</span><strong>CLARITY<br>IS A WEAPON<span>.</span></strong><div class="code-line"><i></i><i></i><i></i><b></b></div><small>END TRANSMISSION_</small></div>
+    </section>
+  </main>
+
+  <footer class="site-footer section-shell">
+    <a class="brand footer-brand" href="#inicio">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-name">CALL<span>OUT</span><small>VALORANT MAP GUIDE</small></span>
+    </a>
+    <p>FEITO PARA COMUNICAR. PRONTO PARA COMPETIR.</p>
+    <a class="back-top" href="#top">VOLTAR AO TOPO ↑</a>
+    <small class="legal-note">Projeto de fã não oficial. VALORANT e suas marcas pertencem à Riot Games. Não afiliado nem endossado pela Riot Games.</small>
+  </footer>
+</body>
+</html>
